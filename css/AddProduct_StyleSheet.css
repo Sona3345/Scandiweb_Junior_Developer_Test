@@ -1,0 +1,31 @@
+nav {
+  padding: 50px;
+}
+
+html, body{
+  height: 100%;
+}
+
+#product_form {
+  padding-bottom: 55px;
+  margin: 50px;
+}
+
+.details {
+  font-weight: 700px;
+}
+.error-feedback{
+  font-size: 15;
+  color: red;
+}
+
+#submit_data{
+  visibility: hidden;
+}
+
+#footer{
+  bottom: 0px;
+  position: fixed;
+  width: 100%;
+  clear: both;
+}
