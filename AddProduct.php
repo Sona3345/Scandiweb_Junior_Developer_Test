@@ -3,14 +3,14 @@
 include 'Validator.php';
 
  // If the save button is clicked then check 
-if (isset($_POST['submit_data'])) {
+  if (isset($_POST['submit_data'])) {
 
-  // It creates an object for Validator class then send the received data.
-  $validation = new Validator($_POST);
-  
-  // It calls the validateForm function to check for errors.
-  $errors = $validation->validateForm();
-  
+    // It creates an object for Validator class then send the received data.
+    $validation = new Validator($_POST);
+    
+    // It calls the validateProductType function to check for errors.
+    $errors = $validation->validateProductType();
+    
 }
 
 ?>
@@ -46,7 +46,6 @@ if (isset($_POST['submit_data'])) {
         <div class="col-sm-3">
           <input type="text" class="form-control" name="sku" id="sku" value="<?php echo $_POST['sku'] ?? '' ?>"> <!--  Please change -->
           <div class="error-feedback"><?php echo $errors['sku'] ?? '' ?></div>
-          <div class="error-feedback"><?php echo $dubSkuErr ?? '' ?></div>
         </div>
       </div>
       <div class="row mb-3">

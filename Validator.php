@@ -15,41 +15,37 @@
 
         private $data = [];
         private $errors = [];
-        
+
+
         public function __construct ($post_data){
 
           $this->data = $post_data;
-         
         }
 
        /**
-       * This method is used to validate the product types. 
+       * This validateProductType function is used to validate the product types. 
        * @return errors, This returns array of errors.
        */
-       public function validateForm(){
-      
-        if ($this->data['productType'] == "Book"){
-          $book = new Books($this->data);
-          $errors = $book->submit();
-          return $errors;
-          
-        }elseif($this->data['productType'] == "DVD"){
-          $dvd = new DVD($this->data);
-          $errors = $dvd->submit();
-          return $errors;
+       public function validateProductType(){
 
-        }elseif($this->data['productType'] == "Furniture"){
-          $furniture = new Furnitures($this->data);
-          $errors = $furniture->submit();
-          return $errors;
-        }else{
-          $this->validateInputs();
-          return $this->errors;
-        }
+        $lookupArray = [
+          'Book' => 'Books',
+          'DVD' => 'DVD',
+          'Furniture' => 'Furnitures'
+        ];
+
+          if(!array_key_exists($this->data['productType'], $lookupArray)) {
+             
+              $this->validateInputs();
+              return $this->errors;
+          }
+          $className = $lookupArray[$this->data['productType']];
+
+          return ( new $className($this->data) )->validateProductType();
       }
 
       /**
-      * This method is used to validate the inputs if the product type is not decided. 
+      * This validateInputs function is used to validate the inputs if the product type is not decided. 
       */
       public function validateInputs(){  
 

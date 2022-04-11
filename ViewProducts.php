@@ -31,7 +31,11 @@
                 </label>";
                 }
             }
+
+            
         }
+
+        public function validateProductType (){}
     }
 
 ?>

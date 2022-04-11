@@ -18,6 +18,15 @@
             $this->type = $this->data['productType'];
 
         }
+     /**
+      * This is override validateProductType function, used to call submit function.
+      * @return error, This returns array of errors.
+      */
+        public function validateProductType(){
+
+             $errors = $this->submit();
+             return $errors;
+       }
 
       /**
       * This is override submit function, used to validate the errors and insert the data.
@@ -35,7 +44,7 @@
                
                return $error;
             }else{
-                $this->insert(array("weight","$this->sku","$this->name","$this->price","$this->weight"));
+                $this->save(array("weight","$this->sku","$this->name","$this->price","$this->weight"));
             }
         }
     }

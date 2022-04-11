@@ -1,42 +1,40 @@
 <?php
- ob_start();
-    include 'Create_conn.php';
+ 
+    include 'QueryBuilder.php';
     /**
-      * This is the abstract Products class extends the dbconnection class. 
+      * This is the abstract Products class extends the QueryBuilder class. 
       * It used as parent class to the products type.
       */
  
-    abstract class Products extends dbConnection{
-        private $data = [];
-
-        public function __construct (){
-            
-        }
+    abstract class Products extends QueryBuilder{
+        private $errors = [];
 
         /**
-        * This is checkSku function, used to search the database, if a SKU exists or not.
-        * @param skuValue, This contains the sku value submited by the user.
+        * This is the abstract validateProductType function, it will be overridden by the children classes
+        * to handle the product type.
+        */
+        abstract public function validateProductType();
+
+        /**
+        * This is checkSku function, used to check the status if a SKU exists or not.
+        * @param val, This contains the sku value submited by the user.
         */
         public function checkSku($skuValue){
-            $sql = "SELECT * FROM products WHERE sku ='$skuValue'";
-            $query_run =  mysqli_query($this->connect(), $sql);
-            if (mysqli_num_rows($query_run) > 0) {
+            $status = $this->find($skuValue);
+            if($status){
                 $this->addErr('sku', 'Please, This sku exists');
             }
         }
 
         /**
-        * This is insert function, used to insert the data into the database.
+        * This is save function, used to save the data to the database.
         * @param array of values, contains the data values.
         */
-        public function insert(array $val){
-          
-            $sql = "INSERT INTO products (sku, name, price, $val[0]) VALUES ('$val[1]', '$val[2]', '$val[3]', '$val[4]');";
-            mysqli_query($this->connect(), $sql);
-            header("location: ProductList.php");
-            ob_end_flush();
+        public function save(array $val){
+            $this->insert($val);
         }
 
+    
         /**
         * This is validateLetters function, used to validate the words inserted by the user.
         * @param array of keys, contains the key values.
@@ -81,6 +79,7 @@
                 }
             }   
         }
+
         /**
         * This is addErr function, used to collect the errors, 
         * and add the errors to its keys.
@@ -108,27 +107,19 @@
         }
 
         /**
-        * This is getAll function, used to return all the data from the database
-        * ordered by ID in descending order.
-        * @return data, contains the all the data from the database.
+        * This is getAll function, used to request for the full data from the database. 
+        * @return data, contains all data from the database 
         */
-        protected function getAll(){
-            $query = "SELECT * FROM products ORDER BY product_ID DESC";
-            $query_run= mysqli_query($this->connect(), $query);
-
-            if (mysqli_num_rows($query_run) > 0) {
-
-                foreach ($query_run as $row) {
-                    $data[] = $row;
-                }
-                return $data;
-            }
+        public function getAll(){
+            $data = $this->select();
+            return $data;
         }
 
+        
         /**
         * This is the abstract submit data, it will be overridden by the children classes.
         */
-        abstract function submit();
+        abstract public function submit();
 
     }
 ?>
